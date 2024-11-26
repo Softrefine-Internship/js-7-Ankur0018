@@ -1,13 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <title>Quiz APP</title>
+  </head>
+  <body>
+    <form class="form_api">
+      <label for="trivia_amount">Number of Questions:</label>
+      <input
+        type="number"
+        name="trivia_amount"
+        id="trivia_amount"
+        class="form_control"
+        required
+      />
+
+      <label for="trivia_category">Select Category:</label>
+      <select
+        name="trivia_category"
+        class="form_control"
+        id="trivia_category"
+        required
+      >
+        <option value="any">Any Category</option>
+        <!-- Rest options will be displayed dynamically -->
+      </select>
+
+      <label for="trivia_type"> Select type: </label>
+      <select name="trivia_type" class="form_control" id="trivia_type" required>
+        <option value="any">Any Type</option>
+        <option value="MCQ">MCQ</option>
+        <option value="True/False">True / False</option>
+      </select>
+
+      <label for="trivia_difficulty"> Select Difficulty: </label>
+      <select
+        name="trivia_difficulty"
+        class="form_control"
+        id="trivia_difficulty"
+        required
+      >
+        <option value="any">Any Difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <button class="start_btn" id="start_btn">Start Quiz</button>
+    </form>
+
+    <div class="timer_screen hidden">
+      <span class="timer-text">Starting QUIZ in : </span>
+      <div class="timer"></div>
+    </div>
+
+    <div class="quiz_screen">
+      <div class="questions-container">
+        <div class="question_header"></div>
+        <div class="options"></div>
+      </div>
+      <div class="questions_dot-container"></div>
+    </div>
+  </body>
 </html>
