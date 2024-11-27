@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <script defer src="script.js"></script>
+    <script type="module" src="controller.js"></script>
+
     <title>Quiz APP</title>
   </head>
   <body>
@@ -57,12 +58,15 @@
       <div class="timer"></div>
     </div>
 
-    <div class="quiz_screen">
+    <div class="quiz_screen hidden">
+      
       <div class="questions-container">
-        <div class="question_header"></div>
+        <div class="question_count">Question 1</div>
+        <div class="question_header">Actual Question</div>
         <div class="options"></div>
       </div>
       <div class="questions_dot-container"></div>
+    </div>
     </div>
   </body>
 </html>

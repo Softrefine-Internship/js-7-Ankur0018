@@ -10,6 +10,11 @@ const formScreen = document.querySelector(".form_api");
 const timerScreen = document.querySelector(".timer_screen");
 const timerElement = document.querySelector(".timer");
 
+const state = {
+  API: ``,
+  questionsData: [],
+};
+
 // Fetch categories on page load
 const fetchCategories = async function () {
   try {
@@ -33,7 +38,7 @@ const generateQuestions = async function (url) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching questions:", error);
@@ -77,8 +82,8 @@ startTestBtn.addEventListener("click", async function (e) {
     timerScreen.classList.add("hidden");
   });
 
-  const data = await generateQuestions(API_URL);
-  state.questionsData.push(data);
+  state.questionsData = await generateQuestions(API_URL);
+
   // Hide the form screen
   formScreen.classList.add("hidden");
   timerScreen.classList.remove("hidden");
@@ -87,13 +92,7 @@ startTestBtn.addEventListener("click", async function (e) {
 // Fetch categories on page load
 fetchCategories();
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// Main QUIZ SCREEN
-
-const state = {
-  API: ``,
-  questionsData: [],
-};
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // Main QUIZ SCREEN
 
 console.log(state);
-console.log(state.questionsData[0].results[0]);
