@@ -1,11 +1,14 @@
 export const state = {
   API: ``,
   questionsData: [],
+  currentQuestionIndex: 0,
   questionStatus: {
     question_No: ``,
     question: ``,
     options: [],
   },
+  currentScore: 0,
+  quizComplete: false,
 };
 
 // Fetch trivia categories
@@ -31,24 +34,20 @@ export const fetchQuestions = async function (url) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    state.questionsData = data; // Update the state with fetched questions
+    // state.questionsData = data; // Update the state with fetched questions
+
+    state.questionsData = data.results.map((q) => ({
+      question: q.question,
+      options: [...q.incorrect_answers, q.correct_answer].sort(
+        () => Math.random() - 0.5
+      ),
+      correct_answer: q.correct_answer,
+      incorrect_answers: q.incorrect_answers,
+    }));
+    state.currentQuestionIndex = 0;
+    state.currentScore = 0;
   } catch (error) {
     console.error("Error fetching questions:", error);
     throw error;
-  }
-};
-
-export const questionStatusUpdate = function () {
-  try {
-    // if (state.questionsData.length >= 0) {
-    state.questionStatus.question = state.questionsData.results[0].question;
-    state.questionStatus.options = [
-      ...state.questionsData.results[0].incorrect_answers,
-      state.questionsData.results[0].correct_answer,
-    ];
-    // } else {
-    //   console.log("No questions to update");
-  } catch (error) {
-    console.error("Error Displaying Questions", error);
   }
 };

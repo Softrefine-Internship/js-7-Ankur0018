@@ -60,13 +60,37 @@
 
     <div class="quiz_screen hidden">
       
-      <div class="questions-container">
-        <div class="question_count">Question 1</div>
-        <div class="question_header">Actual Question</div>
-        <div class="options"></div>
-      </div>
-      <div class="questions_dot-container"></div>
+      
+      <!-- Question Section -->
+       <div class="questions-container">
+         <div class="question_count">Question 1</div>
+        <div class="question_header"> Testing </div>
+         <div class="options"> Option 1</div>
+         <div class="score">Score: 0</div>
+       </div>
+
+
+       <!-- Navigation Buttons -->
+       <div class="quiz_navigation">
+         <button class="quit_btn" id="quit_btn">Quit</button>
+         <button class="next_question_btn" id="next_question_btn">Next</button>
+       </div>
+     </div>
+
+          <!-- Results Screen -->
+     <div class="results_screen hidden">
+       <h1>Quiz Complete!</h1>
+       <div class="final_score"></div>
+       <button class="play_new_quiz_btn" id="play_new_quiz_btn">Play Again</button>
     </div>
+
+    <!-- <div class="error_modal hidden">
+  <div class="modal_content">
+    <p class="modal_message">No questions available for the selected options. Please try different settings.</p>
+    <button class="close_modal_btn">Close</button>
+  </div>
+</div> -->
+
     </div>
   </body>
 </html>

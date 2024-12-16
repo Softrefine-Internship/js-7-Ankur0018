@@ -9,8 +9,12 @@ class View {
   #timerScreen = document.querySelector(".timer_screen");
   #timerElement = document.querySelector(".timer");
   #quizScreen = document.querySelector(".quiz_screen");
-  #question_header = document.querySelector(".question_header");
-  #options = document.querySelector(".options");
+  #resultsScreen = document.querySelector(".results_screen");
+  #questionCount = document.querySelector(".question_count");
+  #questionHeader = document.querySelector(".question_header");
+  #optionsContainer = document.querySelector(".options");
+  #scoreElement = document.querySelector(".score");
+  #finalScore = document.querySelector(".final_score");
 
   // Render categories in the dropdown
   renderCategories(categories) {
@@ -71,9 +75,120 @@ class View {
 
   /// Quiz Screen View
 
-  clearQuestionsContainer() {
-    this.#question_header.textContent = "";
-    this.#options.textContent = "";
+  renderQuestion(question, index, totalQuestions, options) {
+    this.#clearOptions();
+    this.#questionHeader.innerHTML = question;
+    this.#questionCount.textContent = `Question ${
+      index + 1
+    } of ${totalQuestions}`;
+    options.forEach((option) => {
+      const btn = document.createElement("button");
+      btn.classList.add("option");
+      btn.textContent = option;
+      this.#optionsContainer.appendChild(btn);
+    });
+  }
+
+  highlightAnswers(selectedOption, correctAnswer) {
+    // Make all buttons unclickable after an answer is selected
+    const options = document.querySelectorAll(".option");
+    options.forEach((option) => {
+      option.disabled = true;
+      if (option.textContent === selectedOption) {
+        option.classList.add(
+          selectedOption === correctAnswer ? "correct" : "incorrect"
+        );
+      }
+      if (
+        option.textContent === correctAnswer &&
+        selectedOption !== correctAnswer
+      ) {
+        option.classList.add("correct");
+      }
+    });
+  }
+
+  // Disable options after selection
+  disableOptions() {
+    document.querySelectorAll(".option").forEach((option) => {
+      option.disabled = true;
+    });
+  }
+
+  // Update the score display
+  updateScore(score) {
+    this.#scoreElement.textContent = `Score: ${score}`;
+  }
+
+  // Add handler for "Next" button
+  addHandlerNavigation(handler) {
+    document
+      .querySelector(".next_question_btn")
+      .addEventListener("click", handler);
+  }
+
+  addHandlerOptionSelect(handler) {
+    this.#optionsContainer.addEventListener("click", function (e) {
+      if (!e.target.classList.contains("option")) return;
+      handler(e.target.textContent);
+    });
+  }
+
+  addHandlerNavigation(handler) {
+    document
+      .querySelector(".next_question_btn")
+      .addEventListener("click", () => handler(1));
+  }
+
+  #clearOptions() {
+    this.#optionsContainer.innerHTML = "";
+  }
+
+  // Toggle to results screen
+  toggleResultsScreen() {
+    this.#quizScreen.classList.add("hidden");
+    this.#resultsScreen.classList.remove("hidden");
+  }
+
+  // Show final results
+  showResults(score, totalQuestions) {
+    this.#finalScore.textContent = `You scored ${score} out of ${totalQuestions}!`;
+  }
+
+  resetQuiz() {
+    this.#resultsScreen.classList.add("hidden");
+    this.#formScreen.classList.remove("hidden");
+
+    this.resetQuizDataSelection();
+
+    this.#scoreElement.textContent = `Score: 0`;
+  }
+
+  resetQuizDataSelection() {
+    this.#questionAmount.value = "";
+    this.#questionCategory.value = "any";
+    this.#questionType.value = "any";
+    this.#questionDifficulty.value = "any";
+  }
+
+  // Quit quiz and show results
+  // Quit quiz and show results
+  quitQuiz(score, totalQuestions) {
+    this.#quizScreen.classList.add("hidden");
+    this.#resultsScreen.classList.remove("hidden");
+    this.showResults(score, totalQuestions);
+  }
+
+  // Restart quiz handler
+  addHandlerRestart(handler) {
+    document
+      .querySelector(".play_new_quiz_btn")
+      .addEventListener("click", handler);
+  }
+
+  // Quit quiz handler
+  addHandlerQuit(handler) {
+    document.querySelector(".quit_btn").addEventListener("click", handler);
   }
 }
 
