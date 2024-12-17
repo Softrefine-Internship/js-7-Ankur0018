@@ -25,8 +25,18 @@ export const fetchCategories = async function () {
 
 // Generate API URL based on user inputs
 export const generateAPI = function (amount, category, difficulty, type) {
-  const difficultyType = type === "MCQ" ? "multiple" : "boolean";
-  return `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${difficultyType}`;
+  let apiUrl = `https://opentdb.com/api.php?amount=${amount}`;
+
+  if (category !== "any") apiUrl += `&category=${category}`;
+
+  if (difficulty !== "any") apiUrl += `&difficulty=${difficulty}`;
+
+  if (type !== "any") {
+    const difficultyType = type === "MCQ" ? "multiple" : "boolean";
+    apiUrl += `&type=${difficultyType}`;
+  }
+
+  return apiUrl;
 };
 
 // Fetch questions based on the API URL

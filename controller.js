@@ -25,6 +25,15 @@ const controlStartTest = async function () {
     // Get user inputs
     const inputs = view.getInputs();
 
+    if (!inputs.amount || inputs.amount <= 0) {
+      view.showErrorModal(
+        "Please enter a valid number of questions greater than 0."
+      );
+
+      view.hideAllScreens();
+      return;
+    }
+
     // Generate API URL
     model.state.API = model.generateAPI(
       inputs.amount,
@@ -37,6 +46,14 @@ const controlStartTest = async function () {
     view.startTimer(5, () => view.hidetimerScreen());
 
     await model.fetchQuestions(model.state.API);
+
+    if (model.state.questionsData.length < inputs.amount) {
+      view.showErrorModal(
+        "Not enough questions available. Please select a smaller number of questions or a different category."
+      );
+      view.hideAllScreens();
+      return;
+    }
 
     state.currentQuestionIndex = 0;
 
@@ -93,9 +110,9 @@ const handleOptionSelect = function (selectedOption) {
   // DIsable options after selections
   view.disableOptions();
 
-  setTimeout(() => {
-    handleNavigation();
-  }, 1000);
+  // setTimeout(() => {
+  //   handleNavigation();
+  // }, 1000);
 };
 
 // Navigation Logic for next button
@@ -137,6 +154,7 @@ const init = function () {
   view.addHandlerNavigation(handleNavigation);
   view.addHandlerRestart(handleRestartQuiz);
   view.addHandlerQuit(handleQuitQuiz);
+  view.addHandlerCloseModal();
   controlFetchCategories();
 };
 

@@ -15,6 +15,8 @@ class View {
   #optionsContainer = document.querySelector(".options");
   #scoreElement = document.querySelector(".score");
   #finalScore = document.querySelector(".final_score");
+  #errorModal = document.querySelector(".error_modal");
+  #closeModalBtn = document.querySelector(".close_modal_btn");
 
   // Render categories in the dropdown
   renderCategories(categories) {
@@ -78,13 +80,13 @@ class View {
   renderQuestion(question, index, totalQuestions, options) {
     this.#clearOptions();
     this.#questionHeader.innerHTML = question;
-    this.#questionCount.textContent = `Question ${
+    this.#questionCount.innerHTML = `Question ${
       index + 1
     } of ${totalQuestions}`;
     options.forEach((option) => {
       const btn = document.createElement("button");
       btn.classList.add("option");
-      btn.textContent = option;
+      btn.innerHTML = option;
       this.#optionsContainer.appendChild(btn);
     });
   }
@@ -172,7 +174,6 @@ class View {
   }
 
   // Quit quiz and show results
-  // Quit quiz and show results
   quitQuiz(score, totalQuestions) {
     this.#quizScreen.classList.add("hidden");
     this.#resultsScreen.classList.remove("hidden");
@@ -189,6 +190,32 @@ class View {
   // Quit quiz handler
   addHandlerQuit(handler) {
     document.querySelector(".quit_btn").addEventListener("click", handler);
+  }
+
+  //// Error modal
+
+  showErrorModal(message) {
+    const modalMessage = this.#errorModal.querySelector(".modal_message");
+    modalMessage.textContent = message;
+    this.#errorModal.classList.remove("hidden");
+  }
+
+  addHandlerCloseModal() {
+    this.#closeModalBtn.addEventListener("click", () => {
+      this.#errorModal.classList.add("hidden");
+      this.resetQuizDataSelection();
+      this.#formScreen.classList.remove("hidden");
+    });
+  }
+
+  hideAllScreens() {
+    this.#formScreen.classList.add("hidden");
+    this.#quizScreen.classList.add("hidden");
+    this.#timerScreen.classList.add("hidden");
+  }
+
+  hidequizScreen() {
+    this.#quizScreen.classList.add("hidden");
   }
 }
 

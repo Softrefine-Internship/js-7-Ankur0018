@@ -6,51 +6,81 @@
     <link rel="stylesheet" href="styles.css" />
     <script type="module" src="controller.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Special+Elite&display=swap" rel="stylesheet">
+
     <title>Quiz APP</title>
   </head>
   <body>
     <form class="form_api">
-      <label for="trivia_amount">Number of Questions:</label>
-      <input
-        type="number"
+      
+      <div class="main_form_container">
+
+      <div class="form_header">
+        <div class="quiz_title">Quiztopia</div>
+        <div class="quiz_moto">Challenge your knowledge!</div>
+      </div>
+      
+      <div class="form_fill_container">
+      <div class="trivia_amount_container fill_container">
+        <label for="trivia_amount">Number of Questions:</label>
+        <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
         name="trivia_amount"
         id="trivia_amount"
         class="form_control"
+        placeholder="Input Number of Questions"
         required
       />
-
-      <label for="trivia_category">Select Category:</label>
-      <select
+      
+      </div>
+        
+      <div class="trivia_category_container fill_container">
+        <label for="trivia_category">Select Category:</label>
+        <select
         name="trivia_category"
         class="form_control"
         id="trivia_category"
         required
-      >
+        >
         <option value="any">Any Category</option>
         <!-- Rest options will be displayed dynamically -->
       </select>
-
+    </div>
+      
+    <div class="trivia_type_container fill_container">
       <label for="trivia_type"> Select type: </label>
       <select name="trivia_type" class="form_control" id="trivia_type" required>
         <option value="any">Any Type</option>
         <option value="MCQ">MCQ</option>
         <option value="True/False">True / False</option>
       </select>
-
-      <label for="trivia_difficulty"> Select Difficulty: </label>
-      <select
+    </div>
+      
+      <div class="trivia_difficulty_container fill_container">
+        <label for="trivia_difficulty"> Select Difficulty: </label>
+        <select
         name="trivia_difficulty"
         class="form_control"
         id="trivia_difficulty"
         required
-      >
+        >
         <option value="any">Any Difficulty</option>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
-
+    </div>
+      
       <button class="start_btn" id="start_btn">Start Quiz</button>
+    </div>
+
+  </div>
     </form>
 
     <div class="timer_screen hidden">
@@ -60,11 +90,14 @@
 
     <div class="quiz_screen hidden">
       
+      <div class="quiz_screen_main_container">
+
+        <div class="quiz_screen_header quiz_title">Quiztopia</div>
       
       <!-- Question Section -->
        <div class="questions-container">
          <div class="question_count">Question 1</div>
-        <div class="question_header"> Testing </div>
+         <div class="question_header"> Testing </div>
          <div class="options"> Option 1</div>
          <div class="score">Score: 0</div>
        </div>
@@ -72,24 +105,25 @@
 
        <!-- Navigation Buttons -->
        <div class="quiz_navigation">
-         <button class="quit_btn" id="quit_btn">Quit</button>
-         <button class="next_question_btn" id="next_question_btn">Next</button>
+         <button class="quit_btn" id="quit_btn">Quit &#x2717;</button>
+         <button class="next_question_btn" id="next_question_btn">Next 	&rarr;</button>
        </div>
      </div>
-
+    </div>
           <!-- Results Screen -->
      <div class="results_screen hidden">
        <h1>Quiz Complete!</h1>
        <div class="final_score"></div>
-       <button class="play_new_quiz_btn" id="play_new_quiz_btn">Play Again</button>
+       <button class="play_new_quiz_btn" id="play_new_quiz_btn">Start Again</button>
     </div>
 
-    <!-- <div class="error_modal hidden">
-  <div class="modal_content">
-    <p class="modal_message">No questions available for the selected options. Please try different settings.</p>
-    <button class="close_modal_btn">Close</button>
-  </div>
-</div> -->
+    <div class="error_modal hidden">
+      <div class="modal_content">
+        <p class="modal_message">Error message goes here</p>
+        <button class="close_modal_btn">Close</button>
+      </div>
+    </div>
+    
 
     </div>
   </body>
