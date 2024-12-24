@@ -96,6 +96,7 @@ class View {
     const options = document.querySelectorAll(".option");
     options.forEach((option) => {
       option.disabled = true;
+      option.style.cursor = "not-allowed"; // Set cursor to not-allowed
       if (option.textContent === selectedOption) {
         option.classList.add(
           selectedOption === correctAnswer ? "correct" : "incorrect"
@@ -130,8 +131,13 @@ class View {
   }
 
   addHandlerOptionSelect(handler) {
-    this.#optionsContainer.addEventListener("click", function (e) {
+    this.#optionsContainer.addEventListener("click", (e) => {
       if (!e.target.classList.contains("option")) return;
+
+      // Clear error message when an option is selected
+      this.clearErrorMessage();
+
+      // Pass selected option to the handler
       handler(e.target.textContent);
     });
   }
@@ -216,6 +222,69 @@ class View {
 
   hidequizScreen() {
     this.#quizScreen.classList.add("hidden");
+  }
+
+  changeToSubmitButton() {
+    const nextButton = document.querySelector(".next_question_btn");
+    nextButton.textContent = "Submit Quiz";
+    nextButton.classList.add("submit-btn");
+  }
+
+  changeToNextButton() {
+    const nextButton = document.querySelector(".next_question_btn");
+    nextButton.innerHTML = "Next &rarr;";
+    nextButton.classList.remove("submit-btn");
+  }
+
+  displayErrorMessage(message) {
+    let errorSpan = document.querySelector(".error-message");
+    if (!errorSpan) {
+      document
+        .querySelector(".quiz_screen_main_container")
+        .appendChild(errorSpan);
+    }
+    errorSpan.textContent = message;
+  }
+
+  clearErrorMessage() {
+    const errorSpan = document.querySelector(".error-message");
+    if (errorSpan) {
+      errorSpan.textContent = "";
+    }
+  }
+
+  showModal(message, onConfirm, onCancel) {
+    const modal = document.querySelector(".modal");
+    const overlay = document.querySelector(".overlay");
+    const modalMessage = modal.querySelector(".modal-message");
+    const confirmButton = modal.querySelector(".modal-confirm");
+    const cancelButton = modal.querySelector(".modal-cancel");
+
+    // Setting the modal message
+    modalMessage.textContent = message;
+
+    // Showing the modal and overlay
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+
+    // Adding event listeners for confirm and cancel buttons
+    confirmButton.onclick = () => {
+      this.hideModal();
+      if (onConfirm) onConfirm();
+    };
+
+    cancelButton.onclick = () => {
+      this.hideModal();
+      if (onCancel) onCancel();
+    };
+  }
+
+  hideModal() {
+    const modal = document.querySelector(".modal");
+    const overlay = document.querySelector(".overlay");
+
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
   }
 }
 

@@ -26,9 +26,7 @@ const controlStartTest = async function () {
     const inputs = view.getInputs();
 
     if (!inputs.amount || inputs.amount <= 0) {
-      view.showErrorModal(
-        "Please enter a valid number of questions greater than 0."
-      );
+      view.showErrorModal("Please enter a valid number of questions.");
 
       view.hideAllScreens();
       return;
@@ -70,8 +68,6 @@ const controlStartTest = async function () {
 
 const renderCurrentQuestion = function () {
   const questionData = model.state.questionsData[state.currentQuestionIndex];
-  console.log(questionData);
-
   const question = questionData.question;
   const options = [
     ...questionData.incorrect_answers,
@@ -88,6 +84,13 @@ const renderCurrentQuestion = function () {
     model.state.questionsData.length,
     shuffledOptions
   );
+
+  // Change button text to "Submit Quiz" on the last question
+  if (state.currentQuestionIndex === model.state.questionsData.length - 1) {
+    view.changeToSubmitButton();
+  } else {
+    view.changeToNextButton();
+  }
 };
 
 const handleOptionSelect = function (selectedOption) {
@@ -118,17 +121,38 @@ const handleOptionSelect = function (selectedOption) {
 // Navigation Logic for next button
 
 const handleNavigation = function () {
-  state.currentQuestionIndex++;
+  const nextButton = document.querySelector(".next_question_btn");
+  const isSubmitButton = nextButton.classList.contains("submit-btn");
 
-  console.log(state);
+  if (isSubmitButton) {
+    // End the quiz and display results
+    view.toggleResultsScreen();
+    view.showResults(state.currentScore, model.state.questionsData.length);
+    return;
+  }
+
+  const options = document.querySelectorAll(".option");
+  const isOptionSelected = Array.from(options).some(
+    (option) =>
+      option.classList.contains("correct") ||
+      option.classList.contains("incorrect")
+  );
+
+  if (!isOptionSelected) {
+    // Display error message
+    view.displayErrorMessage("Please select an option before proceeding.");
+    return;
+  }
+
+  // Clear error message if present
+  view.clearErrorMessage();
+
+  // Move to the next question
+  state.currentQuestionIndex++;
 
   if (state.currentQuestionIndex < model.state.questionsData.length) {
     // Render the next question
     renderCurrentQuestion();
-  } else {
-    // End the quiz and display results
-    view.toggleResultsScreen();
-    view.showResults(state.currentScore, model.state.questionsData.length);
   }
 };
 
@@ -142,20 +166,31 @@ const handleRestartQuiz = function () {
   view.resetQuiz();
   controlFetchCategories();
 };
+
 const handleQuitQuiz = function () {
-  view.quitQuiz(state.currentScore, model.state.questionsData.length);
-  state.currentQuestionIndex = 0;
-  state.currentScore = 0;
+  view.showModal(
+    "Are you sure you want to quit the Quiz?",
+    () => {
+      // Confirm action
+      view.quitQuiz(state.currentScore, model.state.questionsData.length);
+      state.currentQuestionIndex = 0;
+      state.currentScore = 0;
+    },
+    () => {
+      // Cancel action
+      console.log("Quit cancelled");
+    }
+  );
 };
 
 const init = function () {
+  controlFetchCategories();
   view.addHandlerStartTest(controlStartTest);
   view.addHandlerOptionSelect(handleOptionSelect);
   view.addHandlerNavigation(handleNavigation);
   view.addHandlerRestart(handleRestartQuiz);
   view.addHandlerQuit(handleQuitQuiz);
   view.addHandlerCloseModal();
-  controlFetchCategories();
 };
 
 init();

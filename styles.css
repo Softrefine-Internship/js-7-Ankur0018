@@ -66,18 +66,25 @@ body {
   background-color: var(--clr-surface-a10);
   font-size: 2rem;
   padding: 2rem;
-  gap: 1rem;
+  gap: 3rem;
   border-radius: 2rem;
+}
+
+.form_fill_container_boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .fill_container {
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .form_header {
+  font-family: "Special Elite";
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -92,20 +99,27 @@ body {
 .quiz_moto {
   font-size: 4rem;
   text-align: center;
+  color: #ffffff;
 }
 
-input,
-select {
+.form_control {
   width: 100%;
   letter-spacing: 0.1rem;
-  height: 3.5rem;
+  height: 4rem;
   font-family: "Special Elite";
   font-weight: 500;
   border: 1px solid var(--clr-surface-tonal-a30);
   background-color: var(--clr-surface-tonal-a20);
   border-radius: 2rem;
   color: var(--clr-surface-tonal-a50);
-  padding: 0 1.5rem 0 1rem;
+  padding: 0 1.5rem 0 1.5rem;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 select:hover {
@@ -221,6 +235,13 @@ select:hover {
   background-color: var(--clr-primary-a50);
 }
 
+.error-message {
+  color: red;
+  font-size: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
 /* Question Screen View */
 
 .correct {
@@ -329,17 +350,15 @@ select:hover {
 
 /* Error Message */
 
-.error_modal {
-  height: 100vh;
-  width: 100vw;
+.modal_content {
+  word-wrap: break-word;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal_content {
+  padding: 2rem;
   font-family: "Special Elite";
+  width: 50%;
+  background-color: var(--clr-surface-a10);
+  border-radius: 2rem;
 }
 
 .close_modal_btn {
@@ -350,7 +369,7 @@ select:hover {
   font-size: 1.5rem;
   width: 10rem;
   border-radius: 2rem;
-  align-self: center;
+  align-self: end;
 }
 
 .close_modal_btn:hover {
@@ -364,6 +383,12 @@ select:hover {
 
 .hidden {
   display: none !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Responsive Design */
@@ -527,10 +552,80 @@ select:hover {
 /* Large screens: Desktops and beyond */
 @media screen and (min-width: 90em) {
   .main_form_container {
-    width: 50%;
+    width: 40%;
   }
 
   .quiz_screen_main_container {
     width: 70%;
   }
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--clr-surface-a10);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  width: 30%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modal-message {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #eee;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-btn {
+  font-size: 1.5rem;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-confirm {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-confirm:hover {
+  background-color: #f5564a;
+}
+
+.modal-cancel {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.modal-cancel:hover {
+  background-color: #ffffff;
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
 }

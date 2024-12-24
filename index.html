@@ -19,16 +19,21 @@
       
       <div class="main_form_container">
 
-      <div class="form_header">
-        <div class="quiz_title">Quiztopia</div>
-        <div class="quiz_moto">Challenge your knowledge!</div>
-      </div>
-      
+    
       <div class="form_fill_container">
+
+
+        <div class="form_header">
+          <div class="quiz_title">Quiztopia</div>
+          <div class="quiz_moto">Challenge your knowledge!</div>
+        </div>
+        
+        <div class="form_fill_container_boxes">
+        
       <div class="trivia_amount_container fill_container">
         <label for="trivia_amount">Number of Questions:</label>
         <input
-        type="text"
+        type="number"
         inputmode="numeric"
         pattern="[0-9]*"
         name="trivia_amount"
@@ -46,6 +51,7 @@
         name="trivia_category"
         class="form_control"
         id="trivia_category"
+
         required
         >
         <option value="any">Any Category</option>
@@ -76,7 +82,7 @@
         <option value="hard">Hard</option>
       </select>
     </div>
-      
+  </div>
       <button class="start_btn" id="start_btn">Start Quiz</button>
     </div>
 
@@ -108,6 +114,8 @@
          <button class="quit_btn" id="quit_btn">Quit &#x2717;</button>
          <button class="next_question_btn" id="next_question_btn">Next 	&rarr;</button>
        </div>
+
+       <span class="error-message"></span>
      </div>
     </div>
           <!-- Results Screen -->
@@ -117,12 +125,20 @@
        <button class="play_new_quiz_btn" id="play_new_quiz_btn">Start Again</button>
     </div>
 
-    <div class="error_modal hidden">
-      <div class="modal_content">
-        <p class="modal_message">Error message goes here</p>
-        <button class="close_modal_btn">Close</button>
+    
+
+
+    <div class="modal hidden">
+      <div class="modal-content">
+        <p class="modal-message">Are you sure you want to quit the game?</p>
+        <div class="modal-actions">
+          <button class="modal-btn modal-confirm">Yes, Quit</button>
+          <button class="modal-btn modal-cancel">Cancel</button>
+        </div>
       </div>
     </div>
+    <div class="overlay hidden"></div>
+    
     
 
     </div>
