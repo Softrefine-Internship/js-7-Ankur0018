@@ -16,23 +16,88 @@ const controlFetchCategories = async function () {
   }
 };
 
+// const controlStartTest = async function () {
+//   try {
+//     // Reset score before starting a new test
+//     state.currentScore = 0;
+//     model.state.currentScore = 0;
+
+//     // Get user inputs
+//     const inputs = view.getInputs();
+
+//     if (!inputs.amount || inputs.amount <= 0) {
+//       view.showModal(
+//         "Please enter a valid number of questions.",
+//         () => {
+//           view.resetQuizDataSelection();
+//         },
+//         () => {
+//           console.log("Validation error");
+//         }
+//       );
+//       return;
+//     }
+
+//     // Generate API URL
+//     model.state.API = model.generateAPI(
+//       inputs.amount,
+//       inputs.category,
+//       inputs.difficulty,
+//       inputs.type
+//     );
+
+//     // Start timer and fetch questions
+//     view.startTimer(5, () => view.hidetimerScreen());
+
+//     await model.fetchQuestions(model.state.API);
+
+//     state.currentQuestionIndex = 0;
+
+//     // Show main quiz screen
+//     view.toggleScreens();
+
+//     console.log(model.state);
+
+//     if (model.state.questionsData.length < inputs.amount) {
+//       view.hideScreenExceptForm();
+//       view.showModal(
+//         "Not enough questions available. Please select a smaller number or a different category.",
+//         () => {
+//           view.resetQuizDataSelection();
+//         },
+//         () => {
+//           console.log(`API Error`);
+//         }
+//       );
+//       return;
+//     } else {
+//       renderCurrentQuestion();
+//     }
+//   } catch (error) {
+//     console.error("Error starting the test:", error);
+//   }
+// };
+
 const controlStartTest = async function () {
   try {
-    // Reset score before starting a new test
     state.currentScore = 0;
     model.state.currentScore = 0;
 
-    // Get user inputs
     const inputs = view.getInputs();
 
     if (!inputs.amount || inputs.amount <= 0) {
-      view.showErrorModal("Please enter a valid number of questions.");
-
-      view.hideAllScreens();
+      view.showModal(
+        "Please enter a valid number of questions.",
+        () => {
+          view.resetQuizDataSelection();
+        },
+        () => {
+          console.log("Validation error");
+        }
+      );
       return;
     }
 
-    // Generate API URL
     model.state.API = model.generateAPI(
       inputs.amount,
       inputs.category,
@@ -40,29 +105,35 @@ const controlStartTest = async function () {
       inputs.type
     );
 
-    // Start timer and fetch questions
-    view.startTimer(5, () => view.hidetimerScreen());
+    // Show loader while fetching questions
+    view.showLoader();
 
     await model.fetchQuestions(model.state.API);
 
-    if (model.state.questionsData.length < inputs.amount) {
-      view.showErrorModal(
-        "Not enough questions available. Please select a smaller number of questions or a different category."
-      );
-      view.hideAllScreens();
-      return;
-    }
+    // Hide loader and transition to quiz screen
+    view.hideLoader();
 
     state.currentQuestionIndex = 0;
 
-    // Show main quiz screen
-    view.toggleScreens();
-
-    console.log(model.state);
-
-    renderCurrentQuestion();
+    if (model.state.questionsData.length < inputs.amount) {
+      view.hideScreenExceptForm();
+      view.showModal(
+        "Not enough questions available. Please select a smaller number or a different category.",
+        () => {
+          view.resetQuizDataSelection();
+        },
+        () => {
+          console.log(`API Error`);
+        }
+      );
+      return;
+    } else {
+      view.toggleScreens();
+      renderCurrentQuestion();
+    }
   } catch (error) {
     console.error("Error starting the test:", error);
+    view.hideLoader();
   }
 };
 
@@ -139,7 +210,6 @@ const handleNavigation = function () {
   );
 
   if (!isOptionSelected) {
-    // Display error message
     view.displayErrorMessage("Please select an option before proceeding.");
     return;
   }
@@ -179,7 +249,9 @@ const handleQuitQuiz = function () {
     () => {
       // Cancel action
       console.log("Quit cancelled");
-    }
+    },
+    "Yes, Quit",
+    "No, Stay"
   );
 };
 

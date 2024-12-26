@@ -152,6 +152,10 @@ class View {
     this.#optionsContainer.innerHTML = "";
   }
 
+  hideQuizScreen() {
+    this.#quizScreen.classList.add("hidden");
+  }
+
   // Toggle to results screen
   toggleResultsScreen() {
     this.#quizScreen.classList.add("hidden");
@@ -214,14 +218,14 @@ class View {
     });
   }
 
-  hideAllScreens() {
-    this.#formScreen.classList.add("hidden");
-    this.#quizScreen.classList.add("hidden");
-    this.#timerScreen.classList.add("hidden");
-  }
-
   hidequizScreen() {
     this.#quizScreen.classList.add("hidden");
+  }
+
+  hideScreenExceptForm() {
+    this.#quizScreen.classList.add("hidden");
+    this.#timerScreen.classList.add("hiddden");
+    this.#formScreen.classList.remove("hidden");
   }
 
   changeToSubmitButton() {
@@ -253,21 +257,33 @@ class View {
     }
   }
 
-  showModal(message, onConfirm, onCancel) {
+  showModal(
+    message,
+    onConfirm = null,
+    onCancel = null,
+    confirmText = "OK",
+    cancelText = "Cancel"
+  ) {
     const modal = document.querySelector(".modal");
     const overlay = document.querySelector(".overlay");
     const modalMessage = modal.querySelector(".modal-message");
     const confirmButton = modal.querySelector(".modal-confirm");
     const cancelButton = modal.querySelector(".modal-cancel");
 
-    // Setting the modal message
+    // Update the modal content
     modalMessage.textContent = message;
+    confirmButton.textContent = confirmText;
+    cancelButton.textContent = cancelText;
 
-    // Showing the modal and overlay
+    // Show the modal and overlay
     modal.classList.remove("hidden");
     overlay.classList.remove("hidden");
 
-    // Adding event listeners for confirm and cancel buttons
+    // Remove existing event listeners to avoid stacking
+    confirmButton.onclick = null;
+    cancelButton.onclick = null;
+
+    // new event listeners
     confirmButton.onclick = () => {
       this.hideModal();
       if (onConfirm) onConfirm();
@@ -285,6 +301,24 @@ class View {
 
     modal.classList.add("hidden");
     overlay.classList.add("hidden");
+  }
+
+  #loader = document.querySelector(".loader");
+
+  // Show the loader
+  showLoader() {
+    this.#loader.classList.remove("hidden");
+  }
+
+  // Hide the loader
+  hideLoader() {
+    this.#loader.classList.add("hidden");
+  }
+
+  // Updated method for screen toggles
+  toggleScreens() {
+    this.#formScreen.classList.add("hidden");
+    this.#quizScreen.classList.remove("hidden");
   }
 }
 
